@@ -5,5 +5,5 @@ package com.prod.newsfeed.domain
  */
 
 interface NewsFeedRepository {
-
+	suspend fun refreshNewsFeed(): Boolean
 }
