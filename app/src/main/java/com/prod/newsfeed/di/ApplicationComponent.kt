@@ -4,6 +4,7 @@ import android.app.Application
 import com.prod.newsfeed.di.annotation.ApplicationScope
 import com.prod.newsfeed.di.module.DataModule
 import com.prod.newsfeed.di.module.DomainModule
+import com.prod.newsfeed.ui.main.MainFragment
 import dagger.BindsInstance
 import dagger.Component
 
@@ -16,6 +17,9 @@ import dagger.Component
 	DomainModule::class,
 ])
 interface ApplicationComponent {
+
+	fun inject(fragment: MainFragment)
+
 	@Component.Factory
 	interface Factory {
 		fun create(
