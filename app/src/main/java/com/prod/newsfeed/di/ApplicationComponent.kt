@@ -4,6 +4,7 @@ import android.app.Application
 import com.prod.newsfeed.di.annotation.ApplicationScope
 import com.prod.newsfeed.di.module.DataModule
 import com.prod.newsfeed.di.module.DomainModule
+import com.prod.newsfeed.di.module.ViewModelModule
 import com.prod.newsfeed.ui.main.MainFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -15,6 +16,7 @@ import dagger.Component
 @Component(modules = [
 	DataModule::class,
 	DomainModule::class,
+	ViewModelModule::class
 ])
 interface ApplicationComponent {
 

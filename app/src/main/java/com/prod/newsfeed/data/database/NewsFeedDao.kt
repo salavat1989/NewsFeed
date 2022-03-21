@@ -1,5 +1,6 @@
 package com.prod.newsfeed.data.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.prod.newsfeed.data.database.model.NewsDb
 
@@ -15,8 +16,11 @@ interface NewsFeedDao {
 	suspend fun deleteAllNews()
 
 	@Transaction
-	suspend fun insertNewsAfterDelete(db: List<NewsDb>){
+	suspend fun insertNewsAfterDelete(db: List<NewsDb>) {
 		deleteAllNews()
 		insertNews(db)
 	}
+
+	@Query("Select * from news order by publishedAt DESC")
+	fun getNews(): LiveData<List<NewsDb>>
 }
