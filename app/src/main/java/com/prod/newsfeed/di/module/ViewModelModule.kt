@@ -3,6 +3,7 @@ package com.prod.newsfeed.di.module
 import androidx.lifecycle.ViewModel
 import com.prod.newsfeed.di.annotation.ViewModelKey
 import com.prod.newsfeed.ui.main.MainFragmentViewModel
+import com.prod.newsfeed.ui.settings.SettingsFragmentViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -16,4 +17,9 @@ interface ViewModelModule {
 	@ViewModelKey(MainFragmentViewModel::class)
 	@Binds
 	fun bindMainFragmentViewModel(impl: MainFragmentViewModel): ViewModel
+
+	@IntoMap
+	@ViewModelKey(SettingsFragmentViewModel::class)
+	@Binds
+	fun bindSettingsFragmentViewModel(impl: SettingsFragmentViewModel): ViewModel
 }

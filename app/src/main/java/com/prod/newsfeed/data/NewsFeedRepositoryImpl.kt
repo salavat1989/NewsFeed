@@ -32,8 +32,10 @@ class NewsFeedRepositoryImpl @Inject constructor(
 			val country = getSelectedCountryCode()
 			val newsContainerDto = apiService.getNews(country)
 			val listNewsDb = mapper.mapNewsContainerDtoToListNewsDb(newsContainerDto)
-			newsFeedDao.insertNewsAfterDelete(listNewsDb)
-			preferenceManager.setDataLastUpdateTime(System.currentTimeMillis())
+			if (listNewsDb.size > 0) {
+				newsFeedDao.insertNewsAfterDelete(listNewsDb)
+				preferenceManager.setDataLastUpdateTime(System.currentTimeMillis())
+			}
 		} catch (e: Exception) {
 			result = false
 		}

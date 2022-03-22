@@ -27,7 +27,7 @@ class MainFragmentViewModel @Inject constructor(
 	init {
 		viewModelScope.launch {
 			val lastUpdateTime = preferenceManager.getDataLastUpdateTime().firstOrNull() ?: 0
-			if (System.currentTimeMillis() - lastUpdateTime > 1800000)
+			if (System.currentTimeMillis() - lastUpdateTime > 18000000)
 				refreshNews()
 		}
 	}

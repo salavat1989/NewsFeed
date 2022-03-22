@@ -25,9 +25,9 @@ class PreferenceManager @Inject constructor(private val application: Application
 		}
 	}
 
-	suspend fun setCountryCode(time: String) {
+	suspend fun setCountryCode(code: String) {
 		application.dataStore.edit {
-			it[stringPreferencesKey(PREF_COUNTRY_CODE)] = time
+			it[stringPreferencesKey(PREF_COUNTRY_CODE)] = code
 		}
 	}
 

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NewsFeed</string>
+    <string name="home">Домой</string>
+    <string name="settings">Настройки</string>
+    <string name="select_country_code_for_top_news">Выберите код страны для домашней страницы:</string>
+</resources>
