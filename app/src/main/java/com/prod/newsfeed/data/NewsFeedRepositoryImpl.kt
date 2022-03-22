@@ -8,8 +8,10 @@ import com.prod.newsfeed.data.mapper.NewsMapper
 import com.prod.newsfeed.data.network.ApiService
 import com.prod.newsfeed.domain.NewsFeedRepository
 import com.prod.newsfeed.domain.model.News
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import com.prod.newsfeed.utils.COUNTRY_CODES
+import com.prod.newsfeed.utils.DEFAULT_COUNTRY_CODE
+import com.prod.newsfeed.utils.PreferenceManager
+import kotlinx.coroutines.flow.firstOrNull
 import javax.inject.Inject
 
 /**
@@ -21,18 +23,20 @@ class NewsFeedRepositoryImpl @Inject constructor(
 	private val newsFeedDao: NewsFeedDao,
 	private val application: Application,
 	private val mapper: NewsMapper,
+	private val preferenceManager: PreferenceManager,
 ) : NewsFeedRepository {
 
-	val country = application.resources.configuration.locales.get(0)
-		.country.toString().lowercase()
-
-	private val scope = CoroutineScope(Dispatchers.IO)
-
 	override suspend fun refreshNewsFeed(): Boolean {
-		val result = true
-		val newsContainerDto = apiService.getNews(country)
-		val listNewsDb = mapper.mapNewsContainerDtoToListNewsDb(newsContainerDto)
-		newsFeedDao.insertNewsAfterDelete(listNewsDb)
+		var result = true
+		try {
+			val country = getSelectedCountryCode()
+			val newsContainerDto = apiService.getNews(country)
+			val listNewsDb = mapper.mapNewsContainerDtoToListNewsDb(newsContainerDto)
+			newsFeedDao.insertNewsAfterDelete(listNewsDb)
+			preferenceManager.setDataLastUpdateTime(System.currentTimeMillis())
+		} catch (e: Exception) {
+			result = false
+		}
 		return result
 	}
 
@@ -40,6 +44,23 @@ class NewsFeedRepositoryImpl @Inject constructor(
 		val listNewsDB = newsFeedDao.getNews()
 		return Transformations.map(listNewsDB) {
 			mapper.mapListNewsDbToListNews(it)
+		}
+	}
+
+	private suspend fun getSelectedCountryCode(): String {
+		val savedCountryCode = preferenceManager.getCountryCode().firstOrNull() ?: ""
+		return if (savedCountryCode != "") {
+			savedCountryCode
+		} else {
+			val country = application.resources.configuration.locales.get(0)
+				.country.toString().lowercase()
+			val rightCountry = if (COUNTRY_CODES.contains(country)) {
+				country
+			} else {
+				DEFAULT_COUNTRY_CODE
+			}
+			preferenceManager.setCountryCode(rightCountry)
+			rightCountry
 		}
 	}
 }

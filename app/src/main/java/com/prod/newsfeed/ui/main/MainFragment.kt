@@ -23,7 +23,7 @@ class MainFragment : Fragment() {
 	@Inject
 	lateinit var viewModelFactory: ViewModelFactory
 
-	val newsListAdapter: NewsListAdapter = NewsListAdapter()
+	private val newsListAdapter: NewsListAdapter = NewsListAdapter()
 
 	private val viewModel: MainFragmentViewModel by lazy {
 		ViewModelProvider(this, viewModelFactory)[MainFragmentViewModel::class.java]
@@ -34,7 +34,7 @@ class MainFragment : Fragment() {
 	}
 
 	private var _binding: FragmentMainBinding? = null
-	val binding
+	private val binding
 		get() = _binding ?: throw RuntimeException("FragmentMainBinding is null")
 
 	override fun onAttach(context: Context) {
@@ -59,21 +59,30 @@ class MainFragment : Fragment() {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		setRvAdapters()
 		setViewModelObserver()
+		setSrlListener()
 		super.onViewCreated(view, savedInstanceState)
 	}
 
 	private fun setRvAdapters() {
 		binding.rvNewsList.adapter = newsListAdapter
-		newsListAdapter.onLongClick = {
+		newsListAdapter.onClick = {
 			val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
 			startActivity(intent)
-			true
 		}
 	}
 
 	private fun setViewModelObserver() {
 		viewModel.listNews.observe(viewLifecycleOwner) {
 			newsListAdapter.submitList(it)
+		}
+		viewModel.refreshStatus.observe(viewLifecycleOwner) {
+			binding.swipeRefreshLayout.isRefreshing = it
+		}
+	}
+
+	private fun setSrlListener() {
+		binding.swipeRefreshLayout.setOnRefreshListener {
+			viewModel.refreshNews()
 		}
 	}
 }

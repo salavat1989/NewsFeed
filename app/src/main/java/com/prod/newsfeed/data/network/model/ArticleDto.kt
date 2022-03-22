@@ -9,7 +9,7 @@ data class ArticleDto(
     @SerializedName("content")
     val content: String?, // null
     @SerializedName("description")
-    val description: String, // На юге Китая потерпел крушение пассажирский Boeing 737 авиакомпании China Eastern
+    val description: String?, // На юге Китая потерпел крушение пассажирский Boeing 737 авиакомпании China Eastern
     @SerializedName("publishedAt")
     val publishedAt: String, // 2022-03-21T08:08:25Z
     @SerializedName("source")
@@ -19,5 +19,5 @@ data class ArticleDto(
     @SerializedName("url")
     val url: String, // https://www.mk.ru/incident/2022/03/21/v-kitae-razbilsya-passazhirskiy-boeing-737.html
     @SerializedName("urlToImage")
-    val urlToImage: String, // https://static.mk.ru/upload/entities/2022/03/21/11/articles/facebookPicture/0c/ea/1a/88/e479a08f1d2ed4ffde642830e503ddae.jpg
+    val urlToImage: String?, // https://static.mk.ru/upload/entities/2022/03/21/11/articles/facebookPicture/0c/ea/1a/88/e479a08f1d2ed4ffde642830e503ddae.jpg
 )

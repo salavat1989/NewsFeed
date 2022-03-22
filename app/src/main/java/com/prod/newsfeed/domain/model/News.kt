@@ -7,8 +7,8 @@ package com.prod.newsfeed.domain.model
 data class News(
 	val sourceName: String,
 	val title: String,
-	val description: String,
+	val description: String?,
 	val url: String,
-	val urlToImage: String,
+	val urlToImage: String?,
 	val publishedAt: String,
 )

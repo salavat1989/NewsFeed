@@ -1,6 +1,7 @@
 package com.prod.newsfeed.ui.main
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import com.prod.newsfeed.databinding.ItemNewsBinding
@@ -12,7 +13,7 @@ import com.squareup.picasso.Picasso
  */
 
 class NewsListAdapter : ListAdapter<News, NewsViewHolder>(NewsDiffUtil()) {
-	var onLongClick: ((String) -> Boolean)? = null
+	var onClick: ((String) -> Unit)? = null
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
 		val binding = ItemNewsBinding.inflate(
 			LayoutInflater.from(parent.context),
@@ -27,11 +28,15 @@ class NewsListAdapter : ListAdapter<News, NewsViewHolder>(NewsDiffUtil()) {
 		with(holder.binding) {
 			tvTitle.text = item.title
 			tvDescription.text = item.description
+			if (item.description.isNullOrEmpty()) tvDescription.visibility = View.GONE
+			else tvDescription.visibility = View.VISIBLE
 			tvSourceName.text = item.sourceName
 			tvUpdateTime.text = item.publishedAt
 			Picasso.get().load(item.urlToImage).into(ivImage)
-			root.setOnLongClickListener {
-				onLongClick?.invoke(item.url) ?: false
+			if (item.urlToImage.isNullOrEmpty()) ivImage.visibility = View.GONE
+			else ivImage.visibility = View.VISIBLE
+			root.setOnClickListener {
+				onClick?.invoke(item.url)
 			}
 
 		}
