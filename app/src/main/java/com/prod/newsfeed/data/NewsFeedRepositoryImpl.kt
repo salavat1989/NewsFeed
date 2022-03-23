@@ -3,9 +3,11 @@ package com.prod.newsfeed.data
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.paging.PagingSource
 import com.prod.newsfeed.data.database.NewsFeedDao
 import com.prod.newsfeed.data.mapper.NewsMapper
 import com.prod.newsfeed.data.network.ApiService
+import com.prod.newsfeed.data.network.EverythingNewsPagingSource
 import com.prod.newsfeed.domain.NewsFeedRepository
 import com.prod.newsfeed.domain.model.News
 import com.prod.newsfeed.utils.COUNTRY_CODES
@@ -24,17 +26,21 @@ class NewsFeedRepositoryImpl @Inject constructor(
 	private val application: Application,
 	private val mapper: NewsMapper,
 	private val preferenceManager: PreferenceManager,
+	private val everythingNewsPagingSourceFactory: EverythingNewsPagingSource.Factory,
 ) : NewsFeedRepository {
 
-	override suspend fun refreshNewsFeed(): Boolean {
+	override suspend fun refreshTopNewsFeed(): Boolean {
 		var result = true
 		try {
 			val country = getSelectedCountryCode()
-			val newsContainerDto = apiService.getNews(country)
-			val listNewsDb = mapper.mapNewsContainerDtoToListNewsDb(newsContainerDto)
-			if (listNewsDb.size > 0) {
-				newsFeedDao.insertNewsAfterDelete(listNewsDb)
-				preferenceManager.setDataLastUpdateTime(System.currentTimeMillis())
+			val response = apiService.getNews(country)
+			if (response.isSuccessful) {
+				val articlesDto = response.body()?.articles ?: emptyList()
+				val listNewsDb = mapper.mapListArticleDtoToListNewsDb(articlesDto)
+				if (listNewsDb.isNotEmpty()) {
+					newsFeedDao.insertNewsAfterDelete(listNewsDb)
+					preferenceManager.setDataLastUpdateTime(System.currentTimeMillis())
+				}
 			}
 		} catch (e: Exception) {
 			result = false
@@ -42,7 +48,7 @@ class NewsFeedRepositoryImpl @Inject constructor(
 		return result
 	}
 
-	override fun getNews(): LiveData<List<News>> {
+	override fun getTopNews(): LiveData<List<News>> {
 		val listNewsDB = newsFeedDao.getNews()
 		return Transformations.map(listNewsDB) {
 			mapper.mapListNewsDbToListNews(it)
@@ -64,5 +70,9 @@ class NewsFeedRepositoryImpl @Inject constructor(
 			preferenceManager.setCountryCode(rightCountry)
 			rightCountry
 		}
+	}
+
+	override fun queryEverything(query: String): PagingSource<Int, News> {
+		return everythingNewsPagingSourceFactory.create(query)
 	}
 }

@@ -22,7 +22,7 @@ class MainFragmentViewModel @Inject constructor(
 	private val _refreshStatus = MutableLiveData<Boolean>()
 	val refreshStatus: LiveData<Boolean>
 		get() = _refreshStatus
-	val listNews = repository.getNews()
+	val listNews = repository.getTopNews()
 
 	init {
 		viewModelScope.launch {
@@ -35,7 +35,7 @@ class MainFragmentViewModel @Inject constructor(
 	fun refreshNews() {
 		_refreshStatus.value = true
 		viewModelScope.launch(Dispatchers.IO) {
-			repository.refreshNewsFeed()
+			repository.refreshTopNewsFeed()
 			viewModelScope.launch {
 				_refreshStatus.value = false
 			}

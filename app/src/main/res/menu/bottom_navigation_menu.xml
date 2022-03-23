@@ -6,6 +6,12 @@
         android:icon="@drawable/outline_home_24"
         android:title="@string/home" />
     <item
+        android:id="@+id/searchFragment"
+        android:enabled="true"
+        android:icon="@drawable/outline_search_24"
+        android:title="@string/search" />
+
+    <item
         android:id="@+id/settingsFragment"
         android:enabled="true"
         android:icon="@drawable/outline_settings_24"

@@ -1,6 +1,7 @@
 package com.prod.newsfeed.domain
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import com.prod.newsfeed.domain.model.News
 
 /**
@@ -8,7 +9,9 @@ import com.prod.newsfeed.domain.model.News
  */
 
 interface NewsFeedRepository {
-	suspend fun refreshNewsFeed(): Boolean
+	suspend fun refreshTopNewsFeed(): Boolean
 
-	fun getNews(): LiveData<List<News>>
+	fun getTopNews(): LiveData<List<News>>
+
+	fun queryEverything(query: String): PagingSource<Int, News>
 }

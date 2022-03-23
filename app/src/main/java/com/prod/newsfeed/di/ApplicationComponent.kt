@@ -6,6 +6,7 @@ import com.prod.newsfeed.di.module.DataModule
 import com.prod.newsfeed.di.module.DomainModule
 import com.prod.newsfeed.di.module.ViewModelModule
 import com.prod.newsfeed.ui.main.MainFragment
+import com.prod.newsfeed.ui.search.SearchFragment
 import com.prod.newsfeed.ui.settings.SettingsFragment
 import dagger.BindsInstance
 import dagger.Component
@@ -23,6 +24,7 @@ interface ApplicationComponent {
 
 	fun inject(fragment: MainFragment)
 	fun inject(fragment: SettingsFragment)
+	fun inject(fragment: SearchFragment)
 
 	@Component.Factory
 	interface Factory {

@@ -3,7 +3,6 @@ package com.prod.newsfeed.data.mapper
 import android.app.Application
 import com.prod.newsfeed.data.database.model.NewsDb
 import com.prod.newsfeed.data.network.model.ArticleDto
-import com.prod.newsfeed.data.network.model.NewsContainerDto
 import com.prod.newsfeed.domain.model.News
 import kotlinx.datetime.Instant
 import java.text.SimpleDateFormat
@@ -17,10 +16,10 @@ import javax.inject.Inject
 class NewsMapper @Inject constructor(
 	private val application: Application,
 ) {
-	fun mapNewsContainerDtoToListNewsDb(dto: NewsContainerDto): List<NewsDb> {
-		return dto.articles?.map {
+	fun mapListArticleDtoToListNewsDb(dto: List<ArticleDto>): List<NewsDb> {
+		return dto.map {
 			mapArticleDtoToNewsDb(it)
-		} ?: emptyList()
+		}
 	}
 
 	private fun mapArticleDtoToNewsDb(dto: ArticleDto): NewsDb {
@@ -45,7 +44,7 @@ class NewsMapper @Inject constructor(
 			description = db.description,
 			url = db.url,
 			urlToImage = db.urlToImage,
-			publishedAt = convertUnixTimeToString(db.publishedAt,TIME_TEMPLATE)
+			publishedAt = convertUnixTimeToString(db.publishedAt, TIME_TEMPLATE)
 		)
 	}
 
@@ -55,7 +54,29 @@ class NewsMapper @Inject constructor(
 		val date = Date(t)
 		return dateFormat.format(date)
 	}
-	companion object{
+
+	fun mapListArticleDtoToListNews(dto: List<ArticleDto>): List<News> {
+		return dto.map {
+			mapArticleDtoToNews(it)
+		}
+	}
+
+
+	private fun mapArticleDtoToNews(dto: ArticleDto): News {
+		return News(
+			sourceName = dto.source.name,
+			title = dto.title,
+			description = dto.description,
+			url = dto.url,
+			urlToImage = dto.urlToImage,
+			publishedAt = convertUnixTimeToString(
+				Instant.parse(dto.publishedAt).toEpochMilliseconds(),
+				TIME_TEMPLATE
+			)
+		)
+	}
+
+	companion object {
 		private const val TIME_TEMPLATE = "dd MMMM y H:mm"
 	}
 }
