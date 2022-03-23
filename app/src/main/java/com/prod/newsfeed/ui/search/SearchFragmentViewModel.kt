@@ -20,6 +20,7 @@ class SearchFragmentViewModel @Inject constructor(
 		get() = _query.asStateFlow()
 
 	private var newPagingSource: PagingSource<*, *>? = null
+	@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 	val listNews: StateFlow<PagingData<News>> = query
 		.map(::newPager)
 		.flatMapLatest { pager ->

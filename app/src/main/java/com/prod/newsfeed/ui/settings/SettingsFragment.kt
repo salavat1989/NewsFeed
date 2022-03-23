@@ -61,7 +61,7 @@ class SettingsFragment : Fragment() {
 					val radio = MaterialRadioButton(requireActivity())
 					radio.text = code.key
 					radio.setOnCheckedChangeListener {
-							compoundButton,
+							_,
 							b,
 						->
 						if (b) viewModel.radioChecked(code.key)

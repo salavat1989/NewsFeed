@@ -34,7 +34,11 @@ android {
         viewBinding true
     }
 }
-
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        freeCompilerArgs += "-opt-in=kotlin.RequiresOptIn"
+    }
+}
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'

@@ -9,6 +9,7 @@ import javax.inject.Provider
  * Created by Kadyrov Salavat on 21.03.2022
  */
 
+@Suppress("UNCHECKED_CAST")
 class ViewModelFactory @Inject constructor(
 	private val viewModelProviders:
 	@JvmSuppressWildcards Map<Class<out ViewModel>, Provider<ViewModel>>,
