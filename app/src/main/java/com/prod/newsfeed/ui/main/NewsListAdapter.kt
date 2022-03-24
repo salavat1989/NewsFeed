@@ -32,9 +32,11 @@ class NewsListAdapter : ListAdapter<News, NewsViewHolder>(NewsDiffUtil()) {
 			else tvDescription.visibility = View.VISIBLE
 			tvSourceName.text = item.sourceName
 			tvUpdateTime.text = item.publishedAt
-			Picasso.get().load(item.urlToImage).into(ivImage)
 			if (item.urlToImage.isNullOrEmpty()) ivImage.visibility = View.GONE
-			else ivImage.visibility = View.VISIBLE
+			else {
+				ivImage.visibility = View.VISIBLE
+				Picasso.get().load(item.urlToImage).into(ivImage)
+			}
 			root.setOnClickListener {
 				onClick?.invoke(item.url)
 			}

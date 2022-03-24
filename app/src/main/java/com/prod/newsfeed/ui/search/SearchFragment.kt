@@ -1,8 +1,6 @@
 package com.prod.newsfeed.ui.search
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.prod.newsfeed.NewsFeedApp
 import com.prod.newsfeed.databinding.FragmentSearchBinding
+import com.prod.newsfeed.ui.MainActivity
 import com.prod.newsfeed.ui.ViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
@@ -65,8 +64,10 @@ class SearchFragment : Fragment() {
 	private fun setRvAdapter() {
 		binding.rvNewsList.adapter = pagingDataAdapter
 		pagingDataAdapter.onClick = {
-			val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-			startActivity(intent)
+//			val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+//			startActivity(intent)
+			val action = SearchFragmentDirections.actionSearchFragmentToBrowserActivity(it)
+			(requireActivity() as MainActivity).navController.navigate(action)
 		}
 		viewLifecycleOwner.lifecycleScope.launchWhenStarted {
 			viewModel.listNews.collectLatest {

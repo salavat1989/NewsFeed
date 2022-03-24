@@ -7,7 +7,11 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.prod.newsfeed.ui.main.MainFragment"
-        android:label="MainFragment" />
+        android:label="MainFragment">
+        <action
+            android:id="@+id/action_mainFragment_to_browserActivity"
+            app:destination="@id/browserActivity" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.prod.newsfeed.ui.settings.SettingsFragment"
@@ -15,5 +19,17 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.prod.newsfeed.ui.search.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment">
+        <action
+            android:id="@+id/action_searchFragment_to_browserActivity"
+            app:destination="@id/browserActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/browserActivity"
+        android:name="com.prod.newsfeed.ui.BrowserActivity"
+        android:label="BrowserActivity">
+        <argument
+            android:name="url"
+            app:argType="string" />
+    </activity>
 </navigation>

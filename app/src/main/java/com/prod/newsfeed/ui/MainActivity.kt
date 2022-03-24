@@ -9,7 +9,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.prod.newsfeed.R
 
 class MainActivity : AppCompatActivity() {
-	private val navController: NavController by lazy {
+	val navController: NavController by lazy {
 		val navHostFragment = supportFragmentManager
 			.findFragmentById(R.id.mainFragmentContainer) as NavHostFragment
 		navHostFragment.navController

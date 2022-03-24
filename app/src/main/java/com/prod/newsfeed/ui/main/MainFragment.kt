@@ -1,8 +1,6 @@
 package com.prod.newsfeed.ui.main
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.prod.newsfeed.NewsFeedApp
 import com.prod.newsfeed.databinding.FragmentMainBinding
+import com.prod.newsfeed.ui.MainActivity
 import com.prod.newsfeed.ui.ViewModelFactory
 import javax.inject.Inject
 
@@ -66,8 +65,10 @@ class MainFragment : Fragment() {
 	private fun setRvAdapters() {
 		binding.rvNewsList.adapter = newsListAdapter
 		newsListAdapter.onClick = {
-			val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-			startActivity(intent)
+			val action = MainFragmentDirections.actionMainFragmentToBrowserActivity(it)
+			(requireActivity() as MainActivity).navController.navigate(action)
+//			val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+//			startActivity(intent)
 		}
 	}
 

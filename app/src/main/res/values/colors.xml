@@ -12,7 +12,7 @@
     <color name="blue_700">#FF0270EE</color>
     <color name="blue_800">#FF115ddb</color>
     <color name="blue_900">#FF1b3cbc</color>
+    <color name="blue_gray_800">#FF37474f</color>
     <color name="purple_800">#FF4118d1</color>
     <color name="purple_900">#FF1600c9</color>
-
 </resources>
